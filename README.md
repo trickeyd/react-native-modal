@@ -7,6 +7,8 @@
 - Uses pure JS
 - Does not use the additional native layer used by react-native's implimentation
 - Fixes Android bugs assosiated with touch events
+- Uses hooks, rather than adding things to a component's render that aren't displayed
+- Has four animation types
 
 ## Installation
 
@@ -20,6 +22,36 @@ npm:
 
 ```bash
 $ npm i @idiosync/react-native-modal
+```
+
+## Basic Usage
+
+The simplist implimentaion uses the useModal hook and controls visability
+at the component where the hook is being used
+
+```js
+import { useModal } from "@idiosync/react-native-modal"
+
+const SomeComponent = () => {
+  const [modalIsVisible, setModalIsVisible] = useState(false)
+
+  // this config is optional
+  const optioins = {
+    onBackgroundPress: () => setModalIsVisible(false),
+    animationTypeIn: AnimationType.SLIDE_TOP,
+    animationTypeOut: AnimationType.SLIDE_BOTTOM,
+  }
+
+  useModal(
+    () => <MyModal onClose={() => setModalIsVisible(false)} />,
+    modalIsVisible
+    optioins
+  )
+
+  return (
+    <SomeOtherComponent onShowModal={() => setModalIsVisible(true) />
+  )
+}
 ```
 
 [npm-image]: https://img.shields.io/npm/v/@idiosync/react-native-modal

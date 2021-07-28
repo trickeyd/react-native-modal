@@ -2,9 +2,5 @@ export { ModalContextLayer } from './modal-context-layer'
 export { ModalInterfaceContext } from './modal-contexts'
 export { useModal } from './use-modal'
 export { useModalsSwitch } from './use-modals-switch'
-export type {
-  AnimationType,
-  AnimateStage,
-  ModalOptions,
-  ModalInterface,
-} from './types'
+export { AnimationType, AnimateStage } from './types'
+export type { ModalInterface, ModalOptions } from './types'
