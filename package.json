@@ -1,0 +1,50 @@
+{
+  "name": "@idiosync/react-native-modal",
+  "version": "1.0.0",
+  "description": "A cross platform pure js modal implimentaion",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "prepare": "install-peers",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\""
+  },
+  "contributors": [
+    "James Trickey <james.trickeyd@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trickeyd/react-native-modal.git"
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "modal",
+    "modals",
+    "ios",
+    "android"
+  ],
+  "files": [
+    "lib/**/*"
+  ],
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js"
+  ],
+  "author": "James Trickey (Idiosync Ltd)",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^16.9.0",
+    "react-native": "^0.61.0"
+  },
+  "dependencies": {
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.0",
+    "@types/react-native": "^0.61.00",
+    "install-peers-cli": "^2.2.0",
+    "typescript": "^3.7.5"
+  }
+}
