@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from 'react'
-import { v4 as uuidv4 } from 'uuid'
 import { InternalContext } from './modal-contexts'
 import { ModalOptions } from './types'
+import { getUniqueId } from './generate-id'
 
 export const useModal = (
   renderModal: () => JSX.Element,
@@ -11,7 +11,7 @@ export const useModal = (
 ) => {
   const { addModal, closeModal } = useContext(InternalContext)
 
-  const id = useRef(uuidv4()).current
+  const id = useRef(getUniqueId()).current
   const isMounted = useRef(false)
 
   useEffect(() => {
