@@ -127,58 +127,59 @@ const SomeComponent = () => {
 
 Arguments:
 
-renderModal - Render function which is passed an interface, and returns your bespoke modal component
-isVisible - boolean that specifies whether the modal should be rendered
-options (optional) - Modal options
-onModalClosed (optional) - Called when modal start to animate out
-onModalRemoved (optional) - Called when animation out is completed, and modal is removed
+- *renderModal* - Render function which is passed an interface, and returns your bespoke modal component
+- *isVisible* - boolean that specifies whether the modal should be rendered
+- *options* (optional) - Modal options
+- *onModalClosed* (optional) - Called when modal start to animate out
+- *onModalRemoved* (optional) - Called when animation out is completed, and modal is removed
 
 Returned interface:
 
-removeModal - Instantly removes modal with no out animation
+- *removeModal* - Instantly removes modal with no out animation
 
 ### useModalTrigger
 
 Arguments:
 
-renderModal - Render function which is passed an interface, and returns your bespoke modal component
-options (optional) - Modal options
-onModalClosed (optional) - Called when modal start to animate out
-onModalRemoved (optional) - Called when animation out is completed, and modal is removed
+- *renderModal* - Render function which is passed an interface, and returns your bespoke modal component
+- *options* (optional) - Modal options
+- *onModalClosed* (optional) - Called when modal start to animate out
+- *onModalRemoved* (optional) - Called when animation out is completed, and modal is removed
 
 Returned interface:
 
-openModal - Triggers modal to start animating in
-closeModal - Triggers modal to start animating out
-removeModal - Instantly removes modal with no out animation
+- *openModal* - Triggers modal to start animating in
+- *closeModal* - Triggers modal to start animating out
+- *removeModal* - Instantly removes modal with no out animation
 
 ### useModalSwitch
 
 Arguments:
 
-modalConfigArray - An array of arrays, each with 2 / 3 elements
-[0] - renderModal - Render function which is passed an interface, and returns your bespoke modal component
-[1] - isVisible - boolean that specifies whether the modal should be rendered
-[2] - options (optional) - Modal options
+- *modalConfigArray* - An array of arrays, each with 2 / 3 elements
+- [0] - *renderModal* - Render function which is passed an interface, and returns your bespoke modal component
+- [1] - *isVisible* - boolean that specifies whether the modal should be rendered
+- [2] - *options* (optional) - Modal options
 
 ## Options
 
-onBackgroundPress - Callback triggered by the background being pressed
-animationTypeIn - Animation type used when modal appears
-animationTypeOut - Animation type used when modal disappears
-backgroundFadeDuration - The time taken for the background to animate
-backgroundFadeOutDelay - Time after which the background animates out once modal is closed
-animationTimeIn - Time taken to animate in
-animationTimeOut - Time taken to animate out
+- _onBackgroundPress_ - Callback triggered by the background being pressed
+- _animationTypeIn_ - Animation type used when modal appears
+- _animationTypeOut_ - Animation type used when modal disappears
+- _backgroundFadeDuration_ - The time taken for the background to animate
+- _backgroundFadeOutDelay_ - Time after which the background animates out once modal is closed
+- _animationTimeIn_ - Time taken to animate in
+- _animationTimeOut_ - Time taken to animate out
 
 ## Animation Types
 
 Animations types found on the AnimationType enum
-FADE - Fade in or out
-SLIDE_TOP - Slide in from, or out to the top of the screen
-SLIDE_BOTTOM - Slide in from, or out to the bottom of the screen
-SLIDE_LEFT - Slide in from, or out to the left of the screen
-SLIDE_RIGHT - Slide in from, or out to the right of the screen
+
+- _FADE_ - Fade in or out
+- _SLIDE_TOP_ - Slide in from, or out to the top of the screen
+- _SLIDE_BOTTOM_ - Slide in from, or out to the bottom of the screen
+- _SLIDE_LEFT_ - Slide in from, or out to the left of the screen
+- _SLIDE_RIGHT_ - Slide in from, or out to the right of the screen
 
 [npm-image]: https://img.shields.io/npm/v/@idiosync/react-native-modal
 [npm-url]: https://www.npmjs.com/package/@idiosync/react-native-modal
