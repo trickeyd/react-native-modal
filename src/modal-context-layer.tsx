@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
 import { InternalContext, ModalInterfaceContext } from './modal-contexts'
-import { ModalOptions } from './types'
+import { ModalOptions, ModalInterface } from './types'
 import { ModalLayer } from './modal-layer'
 
 interface Props {
@@ -12,8 +12,9 @@ export const ModalContextLayer = ({ children }: Props) => {
   const [modalConfigs, setModalConfigs] = useState([])
 
   const addModal = (
-    renderModal: () => JSX.Element,
+    renderModal: (modalInterface: ModalInterface) => JSX.Element,
     id: string,
+    onModalRemoved: () => void,
     options?: ModalOptions,
   ) => {
     setModalConfigs([
@@ -23,6 +24,7 @@ export const ModalContextLayer = ({ children }: Props) => {
         id,
         options,
         isClosing: false,
+        onModalRemoved,
       },
     ])
   }
@@ -38,18 +40,15 @@ export const ModalContextLayer = ({ children }: Props) => {
   const removeModal = (id: string) => {
     const modalIndex = modalConfigs.findIndex((config) => config.id === id)
     if (modalIndex !== -1) {
+      const modalConfig = modalConfigs[modalIndex]
       modalConfigs.splice(modalIndex, 1)
       setModalConfigs([...modalConfigs])
+      modalConfig.onModalRemoved && modalConfig.onModalRemoved()
     }
   }
 
   return (
-    <InternalContext.Provider
-      value={{
-        addModal,
-        closeModal,
-      }}
-    >
+    <InternalContext.Provider value={{ addModal, closeModal, removeModal }}>
       {children}
       {!!modalConfigs.length && (
         <View style={StyleSheet.absoluteFill}>

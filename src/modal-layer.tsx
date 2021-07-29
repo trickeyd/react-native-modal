@@ -40,7 +40,7 @@ export const ModalLayer = ({
   animationTimeOut = 400,
   isClosing,
   onAnimationOutComplete,
-}) => {
+}): JSX.Element => {
   const [animationStage, setAnimationStage] = useState(AnimateStage.ANIMATE_IN)
 
   const backgroundOpacityIn = useRef(new Animated.Value(0)).current
@@ -124,11 +124,13 @@ export const ModalLayer = ({
     [AnimateStage.COMPLETE]: backgroundOpacityOut,
   }[animationStage]
 
+  const modalInterface = {
+    onClose,
+    animationStage,
+  }
+
   return (
-    <ModalInterfaceContext.Provider
-      key={id}
-      value={{ onClose, animationStage }}
-    >
+    <ModalInterfaceContext.Provider key={id} value={modalInterface}>
       <View style={[StyleSheet.absoluteFill, styles.modalAndBackground]}>
         <TouchableWithoutFeedback
           onPress={() => onBackgroundPress && onBackgroundPress()}
@@ -139,7 +141,7 @@ export const ModalLayer = ({
           />
         </TouchableWithoutFeedback>
         <Animated.View style={[styles.modalContainer, transform]}>
-          {renderModal(animationStage)}
+          {renderModal(modalInterface)}
         </Animated.View>
       </View>
     </ModalInterfaceContext.Provider>

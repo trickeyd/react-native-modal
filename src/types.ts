@@ -1,10 +1,12 @@
 export interface ModalInternalInterface {
   addModal: (
-    renderModal: () => JSX.Element,
+    renderModal: (modalInterface: ModalInterface) => JSX.Element,
     id: string,
+    onModalRemoved: () => void,
     options?: ModalOptions,
   ) => void
   closeModal: (id: string) => void
+  removeModal: (id: string) => void
 }
 
 export interface ModalInterface {

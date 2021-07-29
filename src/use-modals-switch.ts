@@ -1,11 +1,11 @@
 import { useRef } from 'react'
-import { ModalOptions } from './types'
+import { ModalOptions, ModalInterface } from './types'
 import { useModal } from './use-modal'
 
 export const useModalsSwitch = (
   modalConfigArray: (
-    | [() => JSX.Element, boolean]
-    | [() => JSX.Element, boolean, ModalOptions]
+    | [(modalInterface: ModalInterface) => JSX.Element, boolean]
+    | [(modalInterface: ModalInterface) => JSX.Element, boolean, ModalOptions]
   )[],
 ) => {
   const numModals = useRef(modalConfigArray.length).current
