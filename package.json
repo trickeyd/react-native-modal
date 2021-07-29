@@ -1,7 +1,7 @@
 {
   "name": "@idiosync/react-native-modal",
-  "version": "1.1.0",
-  "description": "A cross platform pure js modal implimentaion",
+  "version": "1.1.1",
+  "description": "An improved modal implimentation for React Native",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
