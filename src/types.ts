@@ -26,6 +26,7 @@ export enum AnimateStage {
   ANIMATE_IN = 'AnimateStage.ANIMATE_IN',
   IN = 'AnimateStage.IN',
   ANIMATE_OUT = 'AnimateStage.ANIMATE_OUT',
+  COMPLETE = 'AnimateStage.COMPLETE',
 }
 
 export enum AnimationType {

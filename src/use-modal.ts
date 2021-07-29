@@ -12,6 +12,7 @@ export const useModal = (
   const { addModal, closeModal } = useContext(InternalContext)
 
   const id = useRef(getUniqueId()).current
+
   const isMounted = useRef(false)
 
   useEffect(() => {

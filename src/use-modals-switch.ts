@@ -3,7 +3,10 @@ import { ModalOptions } from './types'
 import { useModal } from './use-modal'
 
 export const useModalsSwitch = (
-  modalConfigArray: [() => JSX.Element, boolean, ModalOptions | undefined][],
+  modalConfigArray: (
+    | [() => JSX.Element, boolean]
+    | [() => JSX.Element, boolean, ModalOptions]
+  )[],
 ) => {
   const numModals = useRef(modalConfigArray.length).current
   if (numModals !== modalConfigArray.length) {

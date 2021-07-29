@@ -83,32 +83,34 @@ export const ModalLayer = ({
         duration: animationTimeOut,
         easing: Easing.ease,
         useNativeDriver: true,
-      }).start(
-        animationTimeOut > backgroundFadeDuration + backgroundFadeOutDelay
-          ? onAnimationOutComplete
-          : undefined,
-      )
+      }).start(() => {
+        if (animationTimeOut > backgroundFadeDuration + backgroundFadeOutDelay)
+          setAnimationStage(AnimateStage.COMPLETE)
+      })
       Animated.timing(backgroundAnimation, {
         toValue: 0,
         duration: backgroundFadeDuration,
         useNativeDriver: true,
         delay: backgroundFadeOutDelay,
-      }).start(
-        backgroundFadeDuration + backgroundFadeOutDelay >= animationTimeOut
-          ? onAnimationOutComplete
-          : undefined,
-      )
+      }).start(() => {
+        if (backgroundFadeDuration + backgroundFadeOutDelay >= animationTimeOut)
+          setAnimationStage(AnimateStage.COMPLETE)
+      })
+    } else if (animationStage === AnimateStage.COMPLETE) {
+      onAnimationOutComplete()
     }
   }, [modalAnimationIn, backgroundOpacityIn, animationStage])
 
   const currentAnimation = {
     [AnimateStage.ANIMATE_IN]: animationTypeIn,
     [AnimateStage.ANIMATE_OUT]: animationTypeOut,
+    [AnimateStage.COMPLETE]: animationTypeOut,
   }[animationStage]
 
   const currentAnimationValue = {
     [AnimateStage.ANIMATE_IN]: modalAnimationIn,
     [AnimateStage.ANIMATE_OUT]: modalAnimationOut,
+    [AnimateStage.COMPLETE]: modalAnimationOut,
   }[animationStage]
 
   const transform = getTransformnimatedStyleValue(
@@ -119,6 +121,7 @@ export const ModalLayer = ({
   const backgroundAnimation = {
     [AnimateStage.ANIMATE_IN]: backgroundOpacityIn,
     [AnimateStage.ANIMATE_OUT]: backgroundOpacityOut,
+    [AnimateStage.COMPLETE]: backgroundOpacityOut,
   }[animationStage]
 
   return (
