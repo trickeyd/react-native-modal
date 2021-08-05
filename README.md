@@ -53,11 +53,12 @@ const SomeComponent = () => {
   useModal(
     {
       // all config params are optional apart from renderModal
-      renderModal: () => <MyModal onClose={() => setModalIsVisible(false)} />,
+      renderModal: () => <MyModal onClose={() => setModalIsVisible(false)} someProp={someProp} />,
       onBackgroundPress: () => setModalIsVisible(false),
       animationTypeIn: AnimationType.SLIDE_TOP,
     },
-    modalIsVisible
+    modalIsVisible,
+    [someProp] // dependencies array to trigger rerenders. Empty array is passed by default
   )
 
   return (
