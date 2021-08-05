@@ -1,12 +1,9 @@
 import { useRef } from 'react'
-import { ModalOptions, ModalInterface } from './types'
+import { ModalConfig, ModalInterface } from './types'
 import { useModal } from './use-modal'
 
 export const useModalsSwitch = (
-  modalConfigArray: (
-    | [(modalInterface: ModalInterface) => JSX.Element, boolean]
-    | [(modalInterface: ModalInterface) => JSX.Element, boolean, ModalOptions]
-  )[],
+  modalConfigArray: ([ModalConfig, boolean, any[]] | [ModalConfig, boolean])[],
 ) => {
   const numModals = useRef(modalConfigArray.length).current
   if (numModals !== modalConfigArray.length) {
@@ -14,10 +11,11 @@ export const useModalsSwitch = (
   }
 
   for (let i = 0, visibalIsFound = false; i < numModals; i++) {
-    const modalConfig = modalConfigArray[i]
-    const renderModal = modalConfig[0]
-    const isVisible = visibalIsFound ? false : modalConfig[1]
-    useModal(renderModal, isVisible, modalConfig[2])
+    const modalSwitchConfig = modalConfigArray[i]
+    const modalConfig = modalSwitchConfig[0]
+    const isVisible = visibalIsFound ? false : modalSwitchConfig[1]
+    const dependencies = modalSwitchConfig[2]
+    useModal(modalConfig, isVisible, dependencies)
     visibalIsFound = isVisible
   }
 }

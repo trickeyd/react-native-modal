@@ -8,13 +8,13 @@ import {
   Easing,
 } from 'react-native'
 import { ModalInterfaceContext } from './modal-contexts'
-import { AnimationType, AnimateStage } from './types'
+import { AnimationType, AnimateStage, ModalInterface } from './types'
 
 const { width, height } = Dimensions.get('window')
 
 interface Props {
   id: string
-  renderModal: () => JSX.Element
+  renderModal: (modalInterface?: ModalInterface) => JSX.Element
   onBackgroundPress?: () => void
   onClose?: () => void
   backgroundFadeDuration: number
@@ -40,7 +40,7 @@ export const ModalLayer = ({
   animationTimeOut = 400,
   isClosing,
   onAnimationOutComplete,
-}): JSX.Element => {
+}: Props): JSX.Element => {
   const [animationStage, setAnimationStage] = useState(AnimateStage.ANIMATE_IN)
 
   const backgroundOpacityIn = useRef(new Animated.Value(0)).current

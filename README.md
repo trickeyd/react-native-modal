@@ -32,6 +32,8 @@ First, to use this library, you must wrap your entire app in with \<ModalContext
 ```js
 const App = () => {
   return (
+    // NOTE: if you need to access any context from inside your modal, such as redux
+    // you need to place the ModalContextLayer inside the provider for that context 
     <ModalContextLayer>
       {...App goes here...}
     </ModalContextLayer>
@@ -48,17 +50,14 @@ import { useModal } from "@idiosync/react-native-modal"
 const SomeComponent = () => {
   const [modalIsVisible, setModalIsVisible] = useState(false)
 
-  // this config is optional
-  const options = {
-    onBackgroundPress: () => setModalIsVisible(false),
-    animationTypeIn: AnimationType.SLIDE_TOP,
-    animationTypeOut: AnimationType.SLIDE_BOTTOM,
-  }
-
   useModal(
-    () => <MyModal onClose={() => setModalIsVisible(false)} />,
+    {
+      // all config params are optional apart from renderModal
+      renderModal: () => <MyModal onClose={() => setModalIsVisible(false)} />,
+      onBackgroundPress: () => setModalIsVisible(false),
+      animationTypeIn: AnimationType.SLIDE_TOP,
+    },
     modalIsVisible
-    options
   )
 
   return (
@@ -74,9 +73,9 @@ and functions are returned to open and close the modal
 const SomeComponent = () => {
   // the onClose function is received via the render function
   // and passed into the modal component
-  const { openModal, closeModal } = useModalTrigger(
-    ({ onClose }) => <MyModal onClose={onClose} />,
-  )
+  const { openModal, closeModal } = useModalTrigger({
+    renderModal: ({ onClose }) => <MyModal onClose={onClose} />,
+  })
 
   return (
     <>
@@ -99,19 +98,20 @@ const SomeComponent = () => {
   // and the modal options
   useModalSwitch([
     [
-      () => <Modal1 onClose={() => setCurrentModal(MODAL_2)} />,
+    { renderModal: () => <Modal1 onClose={() => setCurrentModal(MODAL_2)} /> },
       currentModal === MODAL_1,
-      options
     ],
     [
-      () => <Modal2 onClose={() => setCurrentModal(MODAL_3)} />,
+      {
+        renderModal () => <Modal2 onClose={() => setCurrentModal(MODAL_3)} someParam={someParam} />,
+        ...options,
+        [someParam] // depencencies
+      },
       currentModal === MODAL_2,
-      options
     ],
     [
-      () => <Modal3 onClose={() => setCurrentModal(NONE)} />,
+      { renderModal:() => <Modal3 onClose={() => setCurrentModal(NONE)} /> },
       currentModal === MODAL_3,
-      options
     ]
   ])
 
@@ -127,49 +127,49 @@ const SomeComponent = () => {
 
 Arguments:
 
-- *renderModal* - Render function which is passed an interface, and returns your bespoke modal component
-- *isVisible* - boolean that specifies whether the modal should be rendered
-- *options* (optional) - Modal options
-- *onModalClosed* (optional) - Called when modal start to animate out
-- *onModalRemoved* (optional) - Called when animation out is completed, and modal is removed
+- _config_ - config object for you modal - must include your renderModal function
+- _isVisible_ - boolean that specifies whether the modal should be rendered
+- _dependencies_ - An array of dependecied for shallow checking. When these change, the modal rerenders. They will often be the same as your modals properties 
 
 Returned interface:
 
-- *removeModal* - Instantly removes modal with no out animation
+- _removeModal_ - Instantly removes modal with no out animation
 
 ### useModalTrigger
 
 Arguments:
 
-- *renderModal* - Render function which is passed an interface, and returns your bespoke modal component
-- *options* (optional) - Modal options
-- *onModalClosed* (optional) - Called when modal start to animate out
-- *onModalRemoved* (optional) - Called when animation out is completed, and modal is removed
+- _config_ - config object for you modal - must include your renderModal function
+- _dependencies_ - An array of dependecied for shallow checking. When these change, the modal rerenders. 
 
 Returned interface:
 
-- *openModal* - Triggers modal to start animating in
-- *closeModal* - Triggers modal to start animating out
-- *removeModal* - Instantly removes modal with no out animation
+- _openModal_ - Triggers modal to start animating in
+- _closeModal_ - Triggers modal to start animating out
+- _removeModal_ - Instantly removes modal with no out animation
 
 ### useModalSwitch
 
 Arguments:
 
-- *modalConfigArray* - An array of arrays, each with 2 / 3 elements
-- [0] - *renderModal* - Render function which is passed an interface, and returns your bespoke modal component
-- [1] - *isVisible* - boolean that specifies whether the modal should be rendered
-- [2] - *options* (optional) - Modal options
+- _modalConfigArray_ - An array of arrays, each with 2 / 3 elements
+- [0] - _config_ - config object for you modal - must include your renderModal function
+- [1] - _isVisible_ - boolean that specifies whether the modal should be rendered
+- [2] - _options_ (optional) - Modal options
 
-## Options
+## Config
 
-- _onBackgroundPress_ - Callback triggered by the background being pressed
-- _animationTypeIn_ - Animation type used when modal appears
-- _animationTypeOut_ - Animation type used when modal disappears
-- _backgroundFadeDuration_ - The time taken for the background to animate
-- _backgroundFadeOutDelay_ - Time after which the background animates out once modal is closed
-- _animationTimeIn_ - Time taken to animate in
-- _animationTimeOut_ - Time taken to animate out
+- _renderModal_- Render function which is passed an interface, and returns your bespoke modal component 
+- _onBackgroundPress_(optional) - Callback triggered by the background being pressed
+- _animationTypeIn_(optional) - Animation type used when modal appears
+- _animationTypeOut_(optional) - Animation type used when modal disappears
+- _backgroundFadeDuration_(optional) - The time taken for the background to animate
+- _backgroundFadeOutDelay_(optional) - Time after which the background animates out once modal is closed
+- _animationTimeIn_(optional) - Time taken to animate in
+- _animationTimeOut_(optional) - Time taken to animate out
+- _onModalClosed_(optional) - Called when modal start to animate out
+- _onModalRemoved_(optional) - Called when animation out is completed, and modal is removed
+ 
 
 ## Animation Types
 

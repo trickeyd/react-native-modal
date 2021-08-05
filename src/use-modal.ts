@@ -1,17 +1,35 @@
 import { useContext, useEffect, useRef } from 'react'
 import { InternalContext } from './modal-contexts'
-import { ModalOptions, ModalInterface } from './types'
+import { ModalConfig, ModalInterface } from './types'
 import { getUniqueId } from './generate-id'
 
 export const useModal = (
-  renderModal: (modalInterface: ModalInterface) => JSX.Element,
+  config: ModalConfig,
   isVisible: boolean,
-  options?: ModalOptions,
-  onModalClosed?: () => void,
-  onModalRemoved?: () => void,
+  dependencies: any[] = [],
 ) => {
-  const { addModal, closeModal, removeModal } = useContext(InternalContext)
-  const id = useRef(getUniqueId()).current
+  const { addModal, closeModal, removeModal, updateModal } = useContext(
+    InternalContext,
+  )
+
+  if (!config?.renderModal) {
+    throw new Error(
+      'You must supply a renderModal function in your modalConfig',
+    )
+  }
+
+  const { onModalClosed, onModalRemoved } = config
+
+  const id = useRef(undefined)
+  if (!id.current) {
+    id.current = getUniqueId()
+  }
+
+  const prevDeps = useRef(dependencies)
+  if (!isShallowEqual(prevDeps.current, dependencies)) {
+    prevDeps.current = dependencies
+  }
+
   const isMounted = useRef(false)
 
   const onModalInternallyRemoved = () => {
@@ -24,16 +42,21 @@ export const useModal = (
 
   useEffect(() => {
     if (isMounted.current && !isVisible) {
-      closeModal(id)
+      closeModal(id.current)
       isMounted.current = false
       onModalClosed && onModalClosed()
     } else if (!isMounted.current && isVisible) {
-      addModal(renderModal, id, onModalInternallyRemoved, options)
+      addModal(id.current, onModalInternallyRemoved, config)
       isMounted.current = true
+    } else if (isMounted.current) {
+      updateModal(id.current, config)
     }
-  }, [isVisible])
+  }, [isVisible, prevDeps.current])
 
   return {
-    removeModal: () => removeModal(id),
+    removeModal: () => removeModal(id.current),
   }
 }
+
+const isShallowEqual = (prevDeps, nextDeps) =>
+  !prevDeps.some((dep, index) => nextDeps[index] !== dep)

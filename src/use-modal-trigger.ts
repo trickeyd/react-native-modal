@@ -1,23 +1,27 @@
 import { useState } from 'react'
-import { ModalOptions, ModalInterface } from './types'
+import { ModalConfig, ModalInterface } from './types'
 import { useModal } from './use-modal'
 
-export const useModalTrigger = (
-  renderModal: (modalInterface: ModalInterface) => JSX.Element,
-  options?: ModalOptions,
-  onModalClosed?: () => void,
-  onModalRemoved?: () => void,
-) => {
+export const useModalTrigger = (config: ModalConfig, dependencies?: any[]) => {
+  if (!config?.renderModal) {
+    throw new Error(
+      'You must supply a renderModal function in your modalConfig',
+    )
+  }
+
+  const onModalClosed = () => {
+    setIsVisible(false)
+    config.onModalClosed && config.onModalClosed()
+  }
+
   const [isVisible, setIsVisible] = useState(false)
   const { removeModal } = useModal(
-    renderModal,
-    isVisible,
-    options,
-    () => {
-      setIsVisible(false)
-      onModalClosed && onModalClosed()
+    {
+      ...config,
+      onModalClosed,
     },
-    onModalRemoved,
+    isVisible,
+    dependencies,
   )
 
   return {

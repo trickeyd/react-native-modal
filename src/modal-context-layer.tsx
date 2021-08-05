@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
 import { InternalContext, ModalInterfaceContext } from './modal-contexts'
-import { ModalOptions, ModalInterface } from './types'
+import { ModalConfig, ModalInterface } from './types'
 import { ModalLayer } from './modal-layer'
 
 interface Props {
@@ -9,32 +9,28 @@ interface Props {
 }
 
 export const ModalContextLayer = ({ children }: Props) => {
-  const [modalConfigs, setModalConfigs] = useState([])
+  const [, setState] = useState({})
+  const render = () => setState({})
+  const modalConfigs = useRef([]).current
 
   const addModal = (
-    renderModal: (modalInterface: ModalInterface) => JSX.Element,
     id: string,
     onModalRemoved: () => void,
-    options?: ModalOptions,
+    options: ModalConfig,
   ) => {
-    setModalConfigs([
-      ...modalConfigs,
-      {
-        renderModal,
-        id,
-        options,
-        isClosing: false,
-        onModalRemoved,
-      },
-    ])
+    modalConfigs.push({
+      id,
+      options,
+      isClosing: false,
+      onModalRemoved,
+    })
+    render()
   }
 
   const closeModal = (id: string) => {
-    setModalConfigs(
-      modalConfigs.map((config) =>
-        config.id === id ? { ...config, isClosing: true } : config,
-      ),
-    )
+    const config = modalConfigs.find((config) => config.id === id)
+    config.isClosing = true
+    render()
   }
 
   const removeModal = (id: string) => {
@@ -42,13 +38,23 @@ export const ModalContextLayer = ({ children }: Props) => {
     if (modalIndex !== -1) {
       const modalConfig = modalConfigs[modalIndex]
       modalConfigs.splice(modalIndex, 1)
-      setModalConfigs([...modalConfigs])
       modalConfig.onModalRemoved && modalConfig.onModalRemoved()
+      render()
+    }
+  }
+
+  const updateModal = (id: string, options: ModalConfig) => {
+    const modalConfig = modalConfigs.find((config) => config.id === id)
+    if (modalConfig) {
+      modalConfig.options = options
+      render()
     }
   }
 
   return (
-    <InternalContext.Provider value={{ addModal, closeModal, removeModal }}>
+    <InternalContext.Provider
+      value={{ addModal, closeModal, removeModal, updateModal }}
+    >
       {children}
       {!!modalConfigs.length && (
         <View style={StyleSheet.absoluteFill}>
@@ -56,7 +62,7 @@ export const ModalContextLayer = ({ children }: Props) => {
             <ModalLayer
               key={modalConfig.id}
               id={modalConfig.id}
-              renderModal={modalConfig.renderModal}
+              renderModal={modalConfig.options.renderModal}
               onBackgroundPress={modalConfig.options?.onBackgroundPress}
               onClose={() => closeModal(modalConfig.id)}
               isClosing={modalConfig.isClosing}

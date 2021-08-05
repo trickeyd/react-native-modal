@@ -1,12 +1,12 @@
 export interface ModalInternalInterface {
   addModal: (
-    renderModal: (modalInterface: ModalInterface) => JSX.Element,
     id: string,
     onModalRemoved: () => void,
-    options?: ModalOptions,
+    options?: ModalConfig,
   ) => void
   closeModal: (id: string) => void
   removeModal: (id: string) => void
+  updateModal: (id: string, options: ModalConfig) => void
 }
 
 export interface ModalInterface {
@@ -14,7 +14,8 @@ export interface ModalInterface {
   animationStage: AnimateStage
 }
 
-export interface ModalOptions {
+export interface ModalConfig {
+  renderModal: (modalInterface?: ModalInterface) => JSX.Element
   onBackgroundPress?: () => void
   animationTypeIn?: AnimationType
   animationTypeOut?: AnimationType
@@ -22,6 +23,8 @@ export interface ModalOptions {
   backgroundFadeOutDelay?: number
   animationTimeIn?: number
   animationTimeOut?: number
+  onModalClosed?: () => void
+  onModalRemoved?: () => void
 }
 
 export enum AnimateStage {
