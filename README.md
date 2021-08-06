@@ -106,9 +106,10 @@ const SomeComponent = () => {
       {
         renderModal () => <Modal2 onClose={() => setCurrentModal(MODAL_3)} someParam={someParam} />,
         ...options,
-        [someParam] // depencencies
       },
       currentModal === MODAL_2,
+      [someParam] // depencencies added per modal
+       
     ],
     [
       { renderModal:() => <Modal3 onClose={() => setCurrentModal(NONE)} /> },
@@ -156,7 +157,7 @@ Arguments:
 - _modalConfigArray_ - An array of arrays, each with 2 / 3 elements
 - [0] - _config_ - config object for you modal - must include your renderModal function
 - [1] - _isVisible_ - boolean that specifies whether the modal should be rendered
-- [2] - _options_ (optional) - Modal options
+- [2] - _dependencies_ - An array of dependecied for shallow checking. When these change, the modal rerenders.
 
 ## Config
 
