@@ -2,7 +2,7 @@
 
 # React Native Modal
 
-<h3>An improved modal implimentation for React Native - by  <a href="https://storage.googleapis.com/idiosync-web-images/telescope/idiosync_very_small_white_bg.png"></a></h3>
+<h3>An improved modal implimentation for React Native - by  <a href="https://www.npmjs.com/~idiosync"><img width="100px" height="31px" valign="middle" src="https://storage.googleapis.com/idiosync-web-images/telescope/idiosync_very_small_white_bg.png"></a></h3>
 
 - Uses pure JS
 - Does not use the additional native layer used by react-native's implementation
@@ -33,7 +33,7 @@ First, to use this library, you must wrap your entire app in with \<ModalContext
 const App = () => {
   return (
     // NOTE: if you need to access any context from inside your modal, such as redux
-    // you need to place the ModalContextLayer inside the provider for that context 
+    // you need to place the ModalContextLayer inside the provider for that context
     <ModalContextLayer>
       {...App goes here...}
     </ModalContextLayer>
@@ -109,7 +109,7 @@ const SomeComponent = () => {
       },
       currentModal === MODAL_2,
       [someParam] // depencencies added per modal
-       
+
     ],
     [
       { renderModal: () => <Modal3 onClose={() => setCurrentModal(NONE)} /> },
@@ -131,7 +131,7 @@ Arguments:
 
 - _config_ - config object for you modal - must include your renderModal function
 - _isVisible_ - boolean that specifies whether the modal should be rendered
-- _dependencies_ - An array of dependecied for shallow checking. When these change, the modal rerenders. They will often be the same as your modals properties 
+- _dependencies_ - An array of dependecied for shallow checking. When these change, the modal rerenders. They will often be the same as your modals properties
 
 Returned interface:
 
@@ -142,7 +142,7 @@ Returned interface:
 Arguments:
 
 - _config_ - config object for you modal - must include your renderModal function
-- _dependencies_ - An array of dependecied for shallow checking. When these change, the modal rerenders. 
+- _dependencies_ - An array of dependecied for shallow checking. When these change, the modal rerenders.
 
 Returned interface:
 
@@ -161,7 +161,7 @@ Arguments:
 
 ## Config
 
-- _renderModal_- Render function which is passed an interface, and returns your bespoke modal component 
+- _renderModal_- Render function which is passed an interface, and returns your bespoke modal component
 - _onBackgroundPress_(optional) - Callback triggered by the background being pressed
 - _animationTypeIn_(optional) - Animation type used when modal appears
 - _animationTypeOut_(optional) - Animation type used when modal disappears
@@ -171,7 +171,6 @@ Arguments:
 - _animationTimeOut_(optional) - Time taken to animate out
 - _onModalClosed_(optional) - Called when modal start to animate out
 - _onModalRemoved_(optional) - Called when animation out is completed, and modal is removed
- 
 
 ## Animation Types
 
