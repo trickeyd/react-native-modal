@@ -2,7 +2,7 @@
 
 # React Native Modal
 
-<h3>An improved modal implimentation for React Native - by  <a href="https://www.npmjs.com/~idiosync"><img width="100px" height="31px" valign="middle" src="https://storage.googleapis.com/idiosync-web-images/telescope/idiosync_very_small.png"></a></h3>
+<h3>An improved modal implimentation for React Native - by  <a href="https://storage.googleapis.com/idiosync-web-images/telescope/idiosync_very_small_white_bg.png"></a></h3>
 
 - Uses pure JS
 - Does not use the additional native layer used by react-native's implementation
