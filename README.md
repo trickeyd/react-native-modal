@@ -104,7 +104,7 @@ const SomeComponent = () => {
     ],
     [
       {
-        renderModal () => <Modal2 onClose={() => setCurrentModal(MODAL_3)} someParam={someParam} />,
+        renderModal: () => <Modal2 onClose={() => setCurrentModal(MODAL_3)} someParam={someParam} />,
         ...options,
       },
       currentModal === MODAL_2,
@@ -112,7 +112,7 @@ const SomeComponent = () => {
        
     ],
     [
-      { renderModal:() => <Modal3 onClose={() => setCurrentModal(NONE)} /> },
+      { renderModal: () => <Modal3 onClose={() => setCurrentModal(NONE)} /> },
       currentModal === MODAL_3,
     ]
   ])
