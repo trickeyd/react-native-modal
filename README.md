@@ -166,7 +166,7 @@ Arguments:
 - _onBackgroundPress_(optional) - Callback triggered by the background being pressed
 - _animationTypeIn_(optional) - Animation type used when modal appears
 - _animationTypeOut_(optional) - Animation type used when modal disappears
-- _backgroundFadeDuration_(optional) - The time taken for the background to animate
+  - _backgroundFadeDuration_(optional) - The time taken for the background to animate
 - _backgroundFadeOutDelay_(optional) - Time after which the background animates out once modal is closed
 - _animationTimeIn_(optional) - Time taken to animate in
 - _animationTimeOut_(optional) - Time taken to animate out

@@ -49,8 +49,8 @@ export const ModalLayer = ({
   animationTimeIn = 400,
   animationTimeOut = 400,
   contentContainerStyle,
-  justifyModal,
-  alignModal,
+  justifyModal = ModalAlign.CENTER,
+  alignModal = ModalAlign.CENTER,
   isClosing,
   onAnimationOutComplete,
 }: Props): JSX.Element => {
