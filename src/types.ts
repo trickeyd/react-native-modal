@@ -1,3 +1,11 @@
+import { StyleProp, ViewStyle } from 'react-native'
+
+export enum ModalAlign {
+  START = 'flex-start',
+  END = 'flex-end',
+  CENTER = 'center',
+}
+
 export interface ModalInternalInterface {
   addModal: (
     id: string,
@@ -25,6 +33,9 @@ export interface ModalConfig {
   animationTimeOut?: number
   onModalClosed?: () => void
   onModalRemoved?: () => void
+  contentContainerStyle?: StyleProp<ViewStyle>
+  justifyModal?: ModalAlign
+  alignModal?: ModalAlign
 }
 
 export enum AnimateStage {

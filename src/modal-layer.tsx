@@ -6,9 +6,16 @@ import {
   Animated,
   Dimensions,
   Easing,
+  ViewStyle,
+  StyleProp,
 } from 'react-native'
 import { ModalInterfaceContext } from './modal-contexts'
-import { AnimationType, AnimateStage, ModalInterface } from './types'
+import {
+  AnimationType,
+  AnimateStage,
+  ModalInterface,
+  ModalAlign,
+} from './types'
 
 const { width, height } = Dimensions.get('window')
 
@@ -25,6 +32,9 @@ interface Props {
   animationTimeOut?: number
   isClosing: boolean
   onAnimationOutComplete: () => void
+  contentContainerStyle?: StyleProp<ViewStyle>
+  justifyModal?: ModalAlign
+  alignModal?: ModalAlign
 }
 
 export const ModalLayer = ({
@@ -38,6 +48,9 @@ export const ModalLayer = ({
   animationTypeOut = AnimationType.FADE,
   animationTimeIn = 400,
   animationTimeOut = 400,
+  contentContainerStyle,
+  justifyModal,
+  alignModal,
   isClosing,
   onAnimationOutComplete,
 }: Props): JSX.Element => {
@@ -131,7 +144,13 @@ export const ModalLayer = ({
 
   return (
     <ModalInterfaceContext.Provider key={id} value={modalInterface}>
-      <View style={[StyleSheet.absoluteFill, styles.modalAndBackground]}>
+      <View
+        style={[
+          StyleSheet.absoluteFill,
+          styles.modalAndBackground,
+          { justifyContent: justifyModal, alignItems: alignModal },
+        ]}
+      >
         <TouchableWithoutFeedback
           onPress={() => onBackgroundPress && onBackgroundPress()}
           style={styles.background}
@@ -140,7 +159,9 @@ export const ModalLayer = ({
             style={[styles.background, { opacity: backgroundAnimation }]}
           />
         </TouchableWithoutFeedback>
-        <Animated.View style={[styles.modalContainer, transform]}>
+        <Animated.View
+          style={[styles.modalContainer, transform, contentContainerStyle]}
+        >
           {renderModal(modalInterface)}
         </Animated.View>
       </View>

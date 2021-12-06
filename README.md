@@ -56,6 +56,7 @@ const SomeComponent = () => {
       renderModal: () => <MyModal onClose={() => setModalIsVisible(false)} someProp={someProp} />,
       onBackgroundPress: () => setModalIsVisible(false),
       animationTypeIn: AnimationType.SLIDE_TOP,
+      contentContainerStyle: { width: '100%' }
     },
     modalIsVisible,
     [someProp] // dependencies array to trigger rerenders. Empty array is passed by default
@@ -171,6 +172,9 @@ Arguments:
 - _animationTimeOut_(optional) - Time taken to animate out
 - _onModalClosed_(optional) - Called when modal start to animate out
 - _onModalRemoved_(optional) - Called when animation out is completed, and modal is removed
+- _contentContainerStyle_ - Pass a style in to effect the container, for example to make it fill the screen. Be aware that filling the screen will stop you being able to click the background.
+- _alignModal_ - horiontally align the modal within its parent container using the enum ModalAlign (START|END|CENTER).
+- _justifyModal_ - vertically align the modal within its parent container using the enum ModalAlign (START|END|CENTER).
 
 ## Animation Types
 

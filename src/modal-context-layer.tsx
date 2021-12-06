@@ -73,6 +73,9 @@ export const ModalContextLayer = ({ children }: Props) => {
               backgroundFadeOutDelay={
                 modalConfig.options?.backgroundFadeOutDelay
               }
+              contentContainerStyle={modalConfig.options?.contentContainerStyle}
+              justifyModal={modalConfig.options?.justifyModal}
+              alignModal={modalConfig.options?.alignModal}
               animationTypeIn={modalConfig.options?.animationTypeIn}
               animationTypeOut={modalConfig.options?.animationTypeOut}
               animationTimeIn={modalConfig.options?.animationTimeIn}
