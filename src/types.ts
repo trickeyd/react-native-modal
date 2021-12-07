@@ -15,6 +15,7 @@ export interface ModalInternalInterface {
   closeModal: (id: string) => void
   removeModal: (id: string) => void
   updateModal: (id: string, options: ModalConfig) => void
+  getModalIsMounted: (id: string) => boolean
 }
 
 export interface ModalInterface {

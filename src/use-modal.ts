@@ -8,9 +8,8 @@ export const useModal = (
   isVisible: boolean,
   dependencies: any[] = [],
 ) => {
-  const { addModal, closeModal, removeModal, updateModal } = useContext(
-    InternalContext,
-  )
+  const { addModal, closeModal, removeModal, updateModal, getModalIsMounted } =
+    useContext(InternalContext)
 
   if (!config?.renderModal) {
     throw new Error(
@@ -30,10 +29,7 @@ export const useModal = (
     prevDeps.current = dependencies
   }
 
-  const isMounted = useRef(false)
-
   const onModalInternallyRemoved = () => {
-    isMounted.current = false
     if (isVisible) {
       onModalClosed && onModalClosed()
     }
@@ -41,14 +37,12 @@ export const useModal = (
   }
 
   useEffect(() => {
-    if (isMounted.current && !isVisible) {
+    if (getModalIsMounted(id.current) && !isVisible) {
       closeModal(id.current)
-      isMounted.current = false
       onModalClosed && onModalClosed()
-    } else if (!isMounted.current && isVisible) {
+    } else if (!getModalIsMounted(id.current) && isVisible) {
       addModal(id.current, onModalInternallyRemoved, config)
-      isMounted.current = true
-    } else if (isMounted.current) {
+    } else if (getModalIsMounted(id.current)) {
       updateModal(id.current, config)
     }
   }, [isVisible, prevDeps.current])

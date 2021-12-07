@@ -51,9 +51,20 @@ export const ModalContextLayer = ({ children }: Props) => {
     }
   }
 
+  const getModalIsMounted = (id: string) => {
+    const modalIndex = modalConfigs.findIndex((config) => config.id === id)
+    return modalIndex !== -1
+  }
+
   return (
     <InternalContext.Provider
-      value={{ addModal, closeModal, removeModal, updateModal }}
+      value={{
+        addModal,
+        closeModal,
+        removeModal,
+        updateModal,
+        getModalIsMounted,
+      }}
     >
       {children}
       {!!modalConfigs.length && (
