@@ -15,6 +15,14 @@ export interface ModalInternalInterface {
   closeModal: (id: string) => void
   removeModal: (id: string) => void
   updateModal: (id: string, options: ModalConfig) => void
+  /**
+   * Cancel an in-flight close animation for a modal that is still in
+   * the tree and swap in a new config. Used by `useModal` when a caller
+   * rapidly toggles `isVisible` false -> true while the out-animation
+   * is still running; without this the modal would finish animating
+   * out with the new content and then disappear.
+   */
+  reopenModal: (id: string, options: ModalConfig) => void
   getModalIsMounted: (id: string) => boolean
 }
 

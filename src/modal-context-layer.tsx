@@ -51,6 +51,18 @@ export const ModalContextLayer = ({ children }: Props) => {
     }
   }
 
+  const reopenModal = (id: string, options: ModalConfig) => {
+    const modalConfig = modalConfigs.find((config) => config.id === id)
+    if (!modalConfig) return
+    // Cancel the in-flight close. `ModalLayer` watches `isClosing` and
+    // rewinds its animationStage back to ANIMATE_IN when it goes
+    // true -> false, so the modal smoothly reverses from whatever value
+    // the out-animation had reached.
+    modalConfig.isClosing = false
+    modalConfig.options = options
+    render()
+  }
+
   const getModalIsMounted = (id: string) => {
     const modalIndex = modalConfigs.findIndex((config) => config.id === id)
     return modalIndex !== -1
@@ -63,6 +75,7 @@ export const ModalContextLayer = ({ children }: Props) => {
         closeModal,
         removeModal,
         updateModal,
+        reopenModal,
         getModalIsMounted,
       }}
     >

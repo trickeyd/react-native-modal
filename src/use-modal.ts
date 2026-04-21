@@ -8,8 +8,14 @@ export const useModal = (
   isVisible: boolean,
   dependencies: any[] = [],
 ) => {
-  const { addModal, closeModal, removeModal, updateModal, getModalIsMounted } =
-    useContext(InternalContext)
+  const {
+    addModal,
+    closeModal,
+    removeModal,
+    updateModal,
+    reopenModal,
+    getModalIsMounted,
+  } = useContext(InternalContext)
 
   if (!config?.renderModal) {
     throw new Error(
@@ -29,6 +35,12 @@ export const useModal = (
     prevDeps.current = dependencies
   }
 
+  // Tracks the last `isVisible` value the effect saw. Used to detect a
+  // false -> true flip while the modal is still in the tree (mid
+  // out-animation), which must be handled as `reopenModal` rather than
+  // `updateModal` or the modal would finish animating out.
+  const prevIsVisible = useRef(isVisible)
+
   const onModalInternallyRemoved = () => {
     if (isVisible) {
       onModalClosed && onModalClosed()
@@ -37,12 +49,20 @@ export const useModal = (
   }
 
   useEffect(() => {
-    if (getModalIsMounted(id.current) && !isVisible) {
+    const wasVisible = prevIsVisible.current
+    prevIsVisible.current = isVisible
+    const mounted = getModalIsMounted(id.current)
+
+    if (!isVisible && mounted) {
       closeModal(id.current)
       onModalClosed && onModalClosed()
-    } else if (!getModalIsMounted(id.current) && isVisible) {
+    } else if (isVisible && !mounted) {
       addModal(id.current, onModalInternallyRemoved, config)
-    } else if (getModalIsMounted(id.current)) {
+    } else if (isVisible && mounted && !wasVisible) {
+      // Caller toggled isVisible false -> true while we were mid-close.
+      // Cancel the close and swap in the new config in one atomic op.
+      reopenModal(id.current, config)
+    } else if (isVisible && mounted) {
       updateModal(id.current, config)
     }
   }, [isVisible, prevDeps.current])

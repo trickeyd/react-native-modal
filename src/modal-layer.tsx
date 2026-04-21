@@ -66,7 +66,18 @@ export const ModalLayer = ({
   ).current
 
   useEffect(() => {
-    if (isClosing) setAnimationStage(AnimateStage.ANIMATE_OUT)
+    if (isClosing) {
+      setAnimationStage(AnimateStage.ANIMATE_OUT)
+    } else if (
+      animationStage === AnimateStage.ANIMATE_OUT ||
+      animationStage === AnimateStage.COMPLETE
+    ) {
+      // `isClosing` went true -> false: the context layer cancelled our
+      // close (via `reopenModal`). Rewind the animation by re-entering
+      // ANIMATE_IN; the Animated.timing inside the stage effect
+      // supersedes any in-flight out-animation on the same value.
+      setAnimationStage(AnimateStage.ANIMATE_IN)
+    }
   }, [isClosing])
 
   useEffect(() => {
@@ -145,6 +156,7 @@ export const ModalLayer = ({
   return (
     <ModalInterfaceContext.Provider key={id} value={modalInterface}>
       <View
+        pointerEvents={isClosing ? 'none' : 'auto'}
         style={[
           StyleSheet.absoluteFill,
           styles.modalAndBackground,
